@@ -11,4 +11,3 @@ Linhas iniciadas com # serão comentários. Lista de comandos suportados
 - NOP (código de máquina 0x00000000, interpretado pelo processador como o sll $0, $0, 0)
 
 
-bongo bong
