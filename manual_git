@@ -1,17 +1,15 @@
-Manual Git
-
 ## Setup de ambient ##
 1# criar conta github
 
 2# configurar git 
 
-	http://help.github.com/linux-set-up-git/
-	http://help.github.com/win-set-up-git/
+       http://help.github.com/linux-set-up-git/
+       http://help.github.com/win-set-up-git/
 
 3# tente fazer o clone deste repositório com o comando (o segundo não funciona na PUC... ssh)
-	git clone https://matheusjadimb@github.com/matheusjadimb/OrgArcII.git
-		ou
-	git clone git@github.com:matheusjadimb/OrgArcII.git
+       git clone https://matheusjadimb@github.com/matheusjadimb/OrgArcII.git
+               ou
+       git clone git@github.com:matheusjadimb/OrgArcII.git
 
 4# Enjoy!
 
@@ -23,5 +21,3 @@ git add -u
 git commit -m"O que alterei?"
 git fetch // se tiver conflitos, resolva!
 git push // código enviado
-
-
