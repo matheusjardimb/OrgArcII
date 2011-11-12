@@ -15,13 +15,4 @@ Manual Git
 
 4# Enjoy!
 
-## Upload de alteraçoes ##
-
-1# Make sure Ur up-to-date!
-git add .
-git add -u
-git commit -m"O que alterei?"
-git fetch // se tiver conflitos, resolva!
-git push // código enviado
-
 
