@@ -1,14 +1,1 @@
 
-## Código ##
-
-Linhas iniciadas com # serão comentários. Lista de comandos suportados
-
-- ADD, AND, OR, SLT
-- ADDI, ANDI, ORI, SLTI
-- LW, SW
-- BEQ
-- J
-- NOP (código de máquina 0x00000000, interpretado pelo processador como o sll $0, $0, 0)
-
-
-bongo bong
