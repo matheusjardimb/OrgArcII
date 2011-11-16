@@ -2,7 +2,7 @@ package br.pucrs.orgArqII.ULA;
 
 import java.util.List;
 
-public abstract class Command {
+public class Command {
 	private Operation op;
 	private List<String> params;
 
@@ -21,7 +21,7 @@ public abstract class Command {
 		for (String param : params) {
 			aux += " " + param;
 		}
-		return op + aux;
+		return op +" "+ aux;
 	}
 
 }
