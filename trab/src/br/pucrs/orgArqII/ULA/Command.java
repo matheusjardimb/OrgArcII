@@ -7,7 +7,6 @@ public abstract class Command {
 	private List<String> params;
 
 	public Command(Operation op, List<String> params) {
-		super();
 		this.op = op;
 		this.params = params;
 	}
@@ -20,7 +19,7 @@ public abstract class Command {
 	public String toString() {
 		String aux = "";
 		for (String param : params) {
-			aux += param;
+			aux += " " + param;
 		}
 		return op + aux;
 	}
