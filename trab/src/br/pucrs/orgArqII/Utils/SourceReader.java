@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import br.pucrs.orgArqII.ULA.Command;
-import br.pucrs.orgArqII.ULA.Operation;
+import br.pucrs.orgArqII.MIPS.Command;
+import br.pucrs.orgArqII.MIPS.Operations;
 
 public class SourceReader {
 
@@ -23,18 +23,18 @@ public class SourceReader {
 				int lineNum = 0;
 				while ((line = in.readLine()) != null) {
 					st = new StringTokenizer(line);
-					try{
-						Operation op = Operation.valueOf(st.nextToken());
-						while(st.hasMoreTokens()){
+					try {
+						Operations op = Operations.valueOf(st.nextToken());
+						while (st.hasMoreTokens()) {
 							parameters.add(st.nextToken());
 						}
 						List<String> clone = new ArrayList<String>();
 						clone.addAll(parameters);
 						commands.add(new Command(op, clone));
 						parameters.clear();
-					}
-					catch(Exception e){
-						System.out.println("Illegal operation in line " + lineNum);
+					} catch (Exception e) {
+						System.out.println("Illegal operation in line "
+								+ lineNum);
 					}
 					lineNum++;
 				}

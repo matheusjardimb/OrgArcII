@@ -1,12 +1,12 @@
-package br.pucrs.orgArqII.ULA;
+package br.pucrs.orgArqII.MIPS;
 
 import java.util.List;
 
 public class Command {
-	private Operation op;
+	private Operations op;
 	private List<String> params;
 
-	public Command(Operation op, List<String> params) {
+	public Command(Operations op, List<String> params) {
 		this.op = op;
 		this.params = params;
 	}
