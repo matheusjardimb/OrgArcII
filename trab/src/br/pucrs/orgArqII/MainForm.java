@@ -1,19 +1,20 @@
 package br.pucrs.orgArqII;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 
 import br.pucrs.orgArqII.MIPS.Command;
+import br.pucrs.orgArqII.MIPS.MIPS;
 import br.pucrs.orgArqII.Utils.SourceReader;
 
 public class MainForm extends javax.swing.JFrame {
 
-	private List<Command> commands;
 	private static final long serialVersionUID = 1L;
+	private MIPS mips;
 
 	public MainForm() {
 		initComponents();
@@ -51,7 +52,7 @@ public class MainForm extends javax.swing.JFrame {
 
 		jCommands.setRequestFocusEnabled(false);// Unclickable!
 		jScrollPane2.setViewportView(jCommands);
-		
+
 		jProximo.setText("Próximo");
 		jProximo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,7 +179,7 @@ public class MainForm extends javax.swing.JFrame {
 	}
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-		System.out.println("1");
+		this.mips.next();
 	}
 
 	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,9 +189,9 @@ public class MainForm extends javax.swing.JFrame {
 	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
 		JFileChooser jFileChooser = new JFileChooser();
 		jFileChooser.showOpenDialog(this);
-		this.commands = SourceReader.readFile(jFileChooser.getSelectedFile().getPath());
+		this.mips = new MIPS(SourceReader.readFile(jFileChooser.getSelectedFile().getPath()));
 		DefaultListModel defaultListModel = new DefaultListModel();
-		for (Command c : this.commands) {
+		for (Command c : this.mips.getCommands()) {
 			defaultListModel.addElement(c);
 		}
 		this.jCommands.setModel(defaultListModel);
