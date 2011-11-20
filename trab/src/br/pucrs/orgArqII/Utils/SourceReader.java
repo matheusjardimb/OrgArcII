@@ -22,19 +22,21 @@ public class SourceReader {
 				String line = null;
 				int lineNum = 0;
 				while ((line = in.readLine()) != null) {
+					// Comments or blank line
+					if (line.startsWith("#") || line.trim().isEmpty())
+						continue;
 					st = new StringTokenizer(line);
 					try {
-						Operations op = Operations.valueOf(st.nextToken());
+						Operations op = Operations.valueOf(st.nextToken().toUpperCase());
 						while (st.hasMoreTokens()) {
-							parameters.add(st.nextToken());
+							parameters.add(st.nextToken().replaceAll(",", "").trim().toUpperCase());
 						}
 						List<String> clone = new ArrayList<String>();
 						clone.addAll(parameters);
 						commands.add(new Command(op, clone));
 						parameters.clear();
 					} catch (Exception e) {
-						System.out.println("Illegal operation in line "
-								+ lineNum);
+						System.out.println("Illegal operation in line " + lineNum);
 					}
 					lineNum++;
 				}

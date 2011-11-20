@@ -1,14 +1,13 @@
 package br.pucrs.orgArqII;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import br.pucrs.orgArqII.MIPS.Command;
 import br.pucrs.orgArqII.MIPS.MIPS;
+import br.pucrs.orgArqII.MIPS.Registers;
 import br.pucrs.orgArqII.Utils.SourceReader;
 
 public class MainForm extends javax.swing.JFrame {
@@ -20,6 +19,7 @@ public class MainForm extends javax.swing.JFrame {
 		initComponents();
 	}
 
+	@SuppressWarnings("serial")
 	private void initComponents() {
 		jLabel1 = new javax.swing.JLabel();
 		jScrollPane1 = new javax.swing.JScrollPane();
@@ -27,13 +27,13 @@ public class MainForm extends javax.swing.JFrame {
 		jLabel2 = new javax.swing.JLabel();
 		jScrollPane2 = new javax.swing.JScrollPane();
 		jCommands = new javax.swing.JList();
-		jProximo = new javax.swing.JButton();
-		jSair = new javax.swing.JButton();
 		jReiniciar = new javax.swing.JButton();
+		jSair = new javax.swing.JButton();
+		jProximo = new javax.swing.JButton();
 		jScrollPane3 = new javax.swing.JScrollPane();
 		jStatus = new javax.swing.JTable();
 		jLabel3 = new javax.swing.JLabel();
-		jButton4 = new javax.swing.JButton();
+		jArquivo = new javax.swing.JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,10 +53,11 @@ public class MainForm extends javax.swing.JFrame {
 		jCommands.setRequestFocusEnabled(false);// Unclickable!
 		jScrollPane2.setViewportView(jCommands);
 
-		jProximo.setText("Próximo");
-		jProximo.addActionListener(new java.awt.event.ActionListener() {
+		jReiniciar.setText("Reiniciar");
+		jReiniciar.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
+				updateForm();
 			}
 		});
 
@@ -64,13 +65,15 @@ public class MainForm extends javax.swing.JFrame {
 		jSair.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton2ActionPerformed(evt);
+				updateForm();
 			}
 		});
 
-		jReiniciar.setText("Reiniciar");
-		jReiniciar.addActionListener(new java.awt.event.ActionListener() {
+		jProximo.setText("Próximo");
+		jProximo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton3ActionPerformed(evt);
+				updateForm();
 			}
 		});
 
@@ -86,10 +89,11 @@ public class MainForm extends javax.swing.JFrame {
 
 		jLabel3.setText("Estado atual");
 
-		jButton4.setText("Arquivo");
-		jButton4.addActionListener(new java.awt.event.ActionListener() {
+		jArquivo.setText("Arquivo");
+		jArquivo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton4ActionPerformed(evt);
+				updateForm();
 			}
 		});
 
@@ -112,12 +116,12 @@ public class MainForm extends javax.swing.JFrame {
 										layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
 												.addGroup(
 														layout.createSequentialGroup()
-																.addComponent(jButton4)
+																.addComponent(jArquivo)
 																.addPreferredGap(
 																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(jReiniciar)
-																.addGap(7, 7, 7)
 																.addComponent(jProximo)
+																.addGap(7, 7, 7)
+																.addComponent(jReiniciar)
 																.addGap(6, 6, 6)
 																.addComponent(jSair,
 																		javax.swing.GroupLayout.PREFERRED_SIZE, 69,
@@ -167,10 +171,9 @@ public class MainForm extends javax.swing.JFrame {
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(
 								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jProximo).addComponent(jReiniciar).addComponent(jSair)
-										.addComponent(jButton4))
+										.addComponent(jReiniciar).addComponent(jProximo).addComponent(jSair)
+										.addComponent(jArquivo))
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-
 		pack();
 	}
 
@@ -179,22 +182,55 @@ public class MainForm extends javax.swing.JFrame {
 	}
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-		this.mips.next();
+		this.mips.restart();
 	}
 
 	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-		System.out.println("2");
+		if (this.mips == null) {
+			JOptionPane.showMessageDialog(this, "Carregue um arquivo primeiro");
+			return;
+		}
+		if (!this.mips.hasNext()) {
+			JOptionPane.showMessageDialog(this, "O último comando foi executado");
+			return;
+		}
+		this.mips.next();
+	}
+
+	private void updateForm() {
+		updateRegisters();
+		updateCommands();
+	}
+
+	private void updateRegisters() {
+		DefaultTableModel defaultTableModel = new DefaultTableModel();
+		defaultTableModel.addColumn("Reg");
+		defaultTableModel.addColumn("Valor");
+		for (Registers reg : Registers.values()) {
+			defaultTableModel.addRow(new String[] { reg.toString(), this.mips.getRegisterValue(reg) });
+		}
+		jRegs.setModel(defaultTableModel);
+	}
+
+	private void updateCommands() {		
+		DefaultListModel defaultListModel = new DefaultListModel();
+		for (Command c : this.mips.getCommands()) {
+			String aux = "";
+			if (this.mips.isActualCommand(c))
+				aux = "-> ";
+			defaultListModel.addElement(aux + c);
+		}
+		this.jCommands.setModel(defaultListModel);
 	}
 
 	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
-		JFileChooser jFileChooser = new JFileChooser();
-		jFileChooser.showOpenDialog(this);
-		this.mips = new MIPS(SourceReader.readFile(jFileChooser.getSelectedFile().getPath()));
-		DefaultListModel defaultListModel = new DefaultListModel();
-		for (Command c : this.mips.getCommands()) {
-			defaultListModel.addElement(c);
-		}
-		this.jCommands.setModel(defaultListModel);
+//		JFileChooser jFileChooser = new JFileChooser();
+//		jFileChooser.showOpenDialog(this);
+//		if (jFileChooser.getSelectedFile() == null)
+//			return;
+//		this.mips = new MIPS(SourceReader.readFile(jFileChooser.getSelectedFile().getPath()));
+		String aux = "commands.txt";
+		this.mips = new MIPS(SourceReader.readFile(aux));
 	}
 
 	public static void main(String args[]) {
@@ -206,10 +242,10 @@ public class MainForm extends javax.swing.JFrame {
 	}
 
 	// UI elements
-	private javax.swing.JButton jProximo;
-	private javax.swing.JButton jSair;
 	private javax.swing.JButton jReiniciar;
-	private javax.swing.JButton jButton4;
+	private javax.swing.JButton jSair;
+	private javax.swing.JButton jProximo;
+	private javax.swing.JButton jArquivo;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;

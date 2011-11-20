@@ -1,2 +1,8 @@
-ADD $12, $31, $45
-ADDI $15, $31, 90
+addi $S1, $S1, 1
+addi $S2, $S2, 2
+
+ADD $S1, $S1, $S1
+ADD $S2, $S2, $S2
+addi $S2, $S2, 2
+ADD $S3, $S1, $S2
+AND $S1, $S1, $S1
