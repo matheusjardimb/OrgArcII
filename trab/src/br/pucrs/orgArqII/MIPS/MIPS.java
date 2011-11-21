@@ -41,6 +41,7 @@ public class MIPS {
 	}
 
 	public boolean isActualCommand(Command c) {
-		return this.commands.get(this.actualCommand.nextIndex() - 1) == c;
+		return (this.actualCommand.nextIndex() == 0) ? false
+				: this.commands.get(this.actualCommand.nextIndex() - 1) == c;
 	}
 }
