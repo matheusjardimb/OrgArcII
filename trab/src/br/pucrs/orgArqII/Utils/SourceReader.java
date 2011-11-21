@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import br.pucrs.orgArqII.MIPS.AssemblyElement;
 import br.pucrs.orgArqII.MIPS.Command;
+import br.pucrs.orgArqII.MIPS.Label;
 import br.pucrs.orgArqII.MIPS.Operations;
 
 public class SourceReader {
 
-	public static List<Command> readFile(String filePath) {
-		List<Command> commands = new ArrayList<Command>();
+	public static List<AssemblyElement> readFile(String filePath) {
+		List<AssemblyElement> commands = new ArrayList<AssemblyElement>();
 		List<String> parameters = new ArrayList<String>();
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(filePath));
@@ -25,6 +27,10 @@ public class SourceReader {
 					// Comments or blank line
 					if (line.startsWith("#") || line.trim().isEmpty())
 						continue;
+					if (line.endsWith(":")) {
+						commands.add(new Label(line.replace(":", "")));
+						continue;
+					}
 					st = new StringTokenizer(line);
 					try {
 						Operations op = Operations.valueOf(st.nextToken().toUpperCase());
