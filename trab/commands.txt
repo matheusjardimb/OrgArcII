@@ -1,6 +1,11 @@
 addi $S1, $S1, 1
 addi $S2, $S2, 2
-
+slt $S5, $S2, $S1
+slti $S5, $S2, 3
+and $S4, $S5, $S1
+andi $S6, $S5, 2
+or $S6, $S2, $S1
+ori $S7, $S6, 4
 ADD $S1, $S1, $S1
 ADD $S2, $S2, $S2
 addi $S2, $S2, 2
