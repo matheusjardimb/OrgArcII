@@ -6,17 +6,46 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class MIPS {
-	private List<Command> commands;
+	private List<AssemblyElement> commands;
 	private HashMap<Registers, String> registers;
-	private ListIterator<Command> actualCommand;
+	private Integer actualCommand;
+
+	// private ListIterator<AssemblyElement> actualCommand;
 
 	public void next() {
-		this.actualCommand.next().execute(this.registers);
+		AssemblyElement next = moveNext();
+		if (next instanceof Label) {
+			this.next();
+		}
+		Label label = ((Command) next).execute(this.registers);
+		if (label == null) {// not a branch
+			return;
+		}
+		for (int i = 0; i < this.commands.size(); i++) {
+			AssemblyElement c = this.commands.get(i);
+			if (c instanceof Label && ((Label) c).getName().equals(label.getName())) {
+				actualCommand = i;
+				return;
+			}
+		}
 	}
 
-	public MIPS(List<Command> commands) {
+	private AssemblyElement moveNext() {
+		if (hasNext())
+			return moveNext(this.actualCommand + 1);
+		else
+			return null;
+	}
+
+	private AssemblyElement moveNext(Integer actual) {
+		this.actualCommand = actual;
+		return this.commands.get(this.actualCommand);
+	}
+
+	public MIPS(List<AssemblyElement> commands) {
 		this.commands = commands;
-		this.actualCommand = this.commands.listIterator();
+		// this.actualCommand = this.commands.listIterator();
+		this.actualCommand = 0;
 		this.registers = new HashMap<Registers, String>();
 		// Initialize all registers
 		for (Registers reg : Registers.values()) {
@@ -24,7 +53,7 @@ public class MIPS {
 		}
 	}
 
-	public List<Command> getCommands() {
+	public List<AssemblyElement> getElements() {
 		return Collections.unmodifiableList(commands);
 	}
 
@@ -33,15 +62,14 @@ public class MIPS {
 	}
 
 	public boolean hasNext() {
-		return this.actualCommand.hasNext();
+		return this.commands.size() > this.actualCommand + 1;
 	}
 
 	public void restart() {
-		this.actualCommand = this.commands.listIterator();
+		this.actualCommand = 0;
 	}
 
 	public boolean isActualCommand(Command c) {
-		return (this.actualCommand.nextIndex() == 0) ? false
-				: this.commands.get(this.actualCommand.nextIndex() - 1) == c;
+		return this.commands.get(actualCommand) == c;
 	}
 }

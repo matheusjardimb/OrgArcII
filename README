@@ -1,6 +1,10 @@
 ## Código ##
 
-Linhas iniciadas com # serão comentários. Lista de comandos suportados
+Linhas iniciadas com # serão comentários. 
+Label's devem ocupar toda a linha.
+
+
+Lista de comandos suportados:
 
 - ADD, AND, OR, SLT
 - ADDI, ANDI, ORI, SLTI

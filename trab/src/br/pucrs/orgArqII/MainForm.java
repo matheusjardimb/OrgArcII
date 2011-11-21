@@ -4,6 +4,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import br.pucrs.orgArqII.MIPS.AssemblyElement;
 import br.pucrs.orgArqII.MIPS.Command;
 import br.pucrs.orgArqII.MIPS.MIPS;
 import br.pucrs.orgArqII.MIPS.Registers;
@@ -189,10 +190,10 @@ public class MainForm extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(this, "Carregue um arquivo primeiro");
 			return;
 		}
-		if (!this.mips.hasNext()) {
-			JOptionPane.showMessageDialog(this, "O último comando foi executado");
-			return;
-		}
+//		if (!this.mips.hasNext()) {
+//			JOptionPane.showMessageDialog(this, "O último comando foi executado");
+//			return;
+//		}
 		this.mips.next();
 	}
 
@@ -211,23 +212,24 @@ public class MainForm extends javax.swing.JFrame {
 		jRegs.setModel(defaultTableModel);
 	}
 
-	private void updateCommands() {		
+	private void updateCommands() {
 		DefaultListModel defaultListModel = new DefaultListModel();
-		for (Command c : this.mips.getCommands()) {
-			String aux = "";
-			if (this.mips.isActualCommand(c))
+		for (AssemblyElement elem : this.mips.getElements()) {
+			String aux = "   ";
+			if (elem instanceof Command && this.mips.isActualCommand((Command)elem))
 				aux = "-> ";
-			defaultListModel.addElement(aux + c);
+			defaultListModel.addElement(aux + elem);
 		}
 		this.jCommands.setModel(defaultListModel);
 	}
 
 	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
-//		JFileChooser jFileChooser = new JFileChooser();
-//		jFileChooser.showOpenDialog(this);
-//		if (jFileChooser.getSelectedFile() == null)
-//			return;
-//		this.mips = new MIPS(SourceReader.readFile(jFileChooser.getSelectedFile().getPath()));
+		// JFileChooser jFileChooser = new JFileChooser();
+		// jFileChooser.showOpenDialog(this);
+		// if (jFileChooser.getSelectedFile() == null)
+		// return;
+		// this.mips = new
+		// MIPS(SourceReader.readFile(jFileChooser.getSelectedFile().getPath()));
 		String aux = "commands.txt";
 		this.mips = new MIPS(SourceReader.readFile(aux));
 	}

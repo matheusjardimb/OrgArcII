@@ -3,7 +3,7 @@ package br.pucrs.orgArqII.MIPS;
 import java.util.HashMap;
 import java.util.List;
 
-public class Command {
+public class Command extends AssemblyElement {
 	private Operations op;
 	private List<String> params;
 
@@ -55,7 +55,7 @@ public class Command {
 		return this.op + " " + aux;
 	}
 
-	public void execute(HashMap<Registers, String> registers) {
+	public Label execute(HashMap<Registers, String> registers) {
 		// TODO complete'em all
 		// and review the command format
 		switch (this.op) {
@@ -78,7 +78,7 @@ public class Command {
 		case BEQ:
 			break;
 		case J:
-			break;
+			return new Label(params.get(0));			
 		case LW:
 			break;
 		case NOP:
@@ -96,6 +96,8 @@ public class Command {
 		default:
 			break;
 		}
+		// Not a branch command
+		return null;
 	}
 
 }
