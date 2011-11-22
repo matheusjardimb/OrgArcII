@@ -3,7 +3,6 @@ package br.pucrs.orgArqII.MIPS;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 
 public class MIPS {
 	private List<AssemblyElement> commands;
