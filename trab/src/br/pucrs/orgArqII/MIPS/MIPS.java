@@ -7,16 +7,15 @@ import java.util.List;
 public class MIPS {
 	private List<AssemblyElement> commands;
 	private HashMap<Registers, String> registers;
+	private HashMap<String, String> memory;
 	private Integer actualCommand;
-
-	// private ListIterator<AssemblyElement> actualCommand;
 
 	public void next() {
 		AssemblyElement next = moveNext();
 		if (next instanceof Label) {
 			this.next();
 		}
-		Label label = ((Command) next).execute(this.registers);
+		Label label = ((Command) next).execute(this);
 		if (label == null) {// not a branch
 			return;
 		}
@@ -43,21 +42,17 @@ public class MIPS {
 
 	public MIPS(List<AssemblyElement> commands) {
 		this.commands = commands;
-		// this.actualCommand = this.commands.listIterator();
 		this.actualCommand = 0;
 		this.registers = new HashMap<Registers, String>();
 		// Initialize all registers
 		for (Registers reg : Registers.values()) {
 			this.registers.put(reg, "0");
 		}
+		this.memory = new HashMap<String, String>();
 	}
 
 	public List<AssemblyElement> getElements() {
 		return Collections.unmodifiableList(commands);
-	}
-
-	public String getRegisterValue(Registers reg) {
-		return this.registers.get(reg);
 	}
 
 	public boolean hasNext() {
@@ -71,4 +66,32 @@ public class MIPS {
 	public boolean isActualCommand(Command c) {
 		return this.commands.get(actualCommand) == c;
 	}
+
+	public void setMemory(String position, String value) {
+		this.memory.put(position, value);
+	}
+
+	public HashMap<Registers, String> getRegisters() {
+		return this.registers;
+	}
+
+	public HashMap<String, String> getMemory() {
+		return this.memory;
+	}
+
+	public String getMemoryValue(String pos) {
+		if (this.memory.get(pos) == null) {
+			this.memory.put(pos, "0");
+		}
+		return this.memory.get(pos);
+	}
+
+	public String getRegisterValue(Registers reg) {
+		return this.registers.get(reg);
+	}
+
+	public void setRegValue(Registers reg, String value) {
+		this.registers.put(reg, value);
+	}
+
 }

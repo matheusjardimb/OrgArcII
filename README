@@ -2,6 +2,7 @@
 
 Linhas iniciadas com # serão comentários. 
 Label's devem ocupar toda a linha.
+Comandos do tipo 'i' (e.g. addi, ori...) devem ter a constante como último parâmetro
 
 
 Lista de comandos suportados:

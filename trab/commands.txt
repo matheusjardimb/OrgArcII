@@ -1,15 +1,12 @@
 label:
 addi $S1, $S1, 1
-addi $S2, $S2, 2
-slt $S5, $S2, $S1
-slti $S5, $S2, 3
-and $S4, $S5, $S1
-andi $S6, $S5, 2
-or $S6, $S2, $S1
-ori $S7, $S6, 4
+sw $s1, pos
 ADD $S1, $S1, $S1
-ADD $S2, $S2, $S2
-addi $S2, $S2, 2
-ADD $S3, $S1, $S2
-AND $S1, $S1, $S1
+slt $S1, $S2, $S1
+slti $S2, $S2, 3
+and $S2, $S2, $S1
+andi $S2, $S1, 2
+or $S1, $S2, $S1
+ori $S2, $S1, 4
+lw $s2, pos
 j label
