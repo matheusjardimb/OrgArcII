@@ -1,5 +1,6 @@
 package br.pucrs.orgArqII.MIPS;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -99,14 +100,24 @@ public class MIPS {
 		return this.memory;
 	}
 
-	public String getCommandDescriptions(MIPSStatus status) {
+	public List<String> getCommandDescriptions(MIPSStatus status) {
 		int index = this.status.get(status);
 		if (index < 0 || index > this.commands.size() - 1)
 			return null;
 		AssemblyElement command = this.commands.get(index);
-		while (!(command instanceof Command)) {
-			command = this.commands.get(index++);
+		if (!(command instanceof Command)) {
+			return new ArrayList<String>();
 		}
-		return ((Command) command).getDescription(status);
+		return ((Command) command).getStatus(status);
+	}
+
+	public Command getActualCommand(MIPSStatus status) {
+		Integer integer = this.status.get(status);
+		if (integer < 0 || integer > this.commands.size() - 1)
+			return null;
+		if (this.commands.get(integer) instanceof Command) {
+			return (Command) this.commands.get(integer);
+		}
+		return null;
 	}
 }

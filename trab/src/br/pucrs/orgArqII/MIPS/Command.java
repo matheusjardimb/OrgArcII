@@ -1,5 +1,6 @@
 package br.pucrs.orgArqII.MIPS;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Command extends AssemblyElement {
@@ -9,7 +10,6 @@ public class Command extends AssemblyElement {
 	public Command(Operations op, List<String> params) throws Exception {
 		this.op = op;
 		Exception exception = new Exception("Mal formed instruction");
-		// TODO Complete'em all!
 		switch (this.op) {
 		case ADD:
 			if (params.size() != 3)
@@ -342,20 +342,178 @@ public class Command extends AssemblyElement {
 		}
 	}
 
-	public String getDescription(MIPSStatus status) {
-		switch (status) {
-		case BUSCA:
-			return "busca " + this.params.toString();
-		case DECODIFICACAO:
-			return "decod " + this.params.toString();
-		case EXECUÇÃO:
-			return "exec " + this.params.toString();
-		case MEMORIA:
-			return "memor " + this.params.toString();
-		case WRITEBACK:
-			return "writb " + this.params.toString();
-		default:
-			return null;
+	public List<String> getStatus(MIPSStatus status) {
+		switch (this.op) {
+		case ADD:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case AND:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case ADDI:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case ANDI:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case BEQ:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case J:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case LW:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case NOP:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("NOP");
+			case DECODIFICACAO:
+				return Arrays.asList("NOP");
+			case EXECUÇÃO:
+				return Arrays.asList("NOP");
+			case MEMORIA:
+				return Arrays.asList("NOP");
+			case WRITEBACK:
+				return Arrays.asList("NOP");
+			}
+		case OR:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case ORI:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case SLT:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case SLTI:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
+		case SW:
+			switch (status) {
+			case BUSCA:
+				return Arrays.asList("Busca");
+			case DECODIFICACAO:
+				return Arrays.asList("RegWrite: 1");
+			case EXECUÇÃO:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case MEMORIA:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case WRITEBACK:
+				return Arrays.asList("MemToReg: 0");
+			}
 		}
+		return null;
 	}
 }

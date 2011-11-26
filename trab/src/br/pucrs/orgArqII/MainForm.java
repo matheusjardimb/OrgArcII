@@ -1,6 +1,7 @@
 package br.pucrs.orgArqII;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -269,13 +270,15 @@ public class MainForm extends javax.swing.JFrame {
 
 	private void updateStatus() {
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
-		ArrayList<String> arrayList = new ArrayList<String>();
 		for (MIPSStatus status : MIPSStatus.values()) {
-			defaultTableModel.addColumn(status);
-			arrayList.add(this.mips.getCommandDescriptions(status));
+			List<String> commandDescriptions = new ArrayList<String>();
+			Command aux = this.mips.getActualCommand(status);
+			commandDescriptions.add((aux == null) ? "" : aux.toString());
+			List<String> desc = this.mips.getCommandDescriptions(status);
+			if (desc != null)
+				commandDescriptions.addAll(desc);
+			defaultTableModel.addColumn(status, commandDescriptions.toArray());
 		}
-
-		defaultTableModel.addRow(arrayList.toArray());
 		jStatus.setModel(defaultTableModel);
 	}
 

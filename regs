@@ -1,0 +1,20 @@
+- ADD, AND, OR, SLT
+- ADDI, ANDI, ORI, SLTI
+- LW, SW
+- BEQ
+- J
+
+1- 
+2- RegWrite
+3- RegDst, ALUSrc
+4- Branch, MemWrite
+5- MemToReg
+
+			ADD	AND	OR	SLT	ADDI ANDI ORI SLTI LW	SW	BEQ	J
+RegWrite	1	1	1	1	1					1	0	0	0
+RegDst		1	1	1	1	0					0	X	X	X
+ALUSrc		0	0	0	0	1					1	1	0	X
+Branch		0	0	0	0	0					0	0	1	X
+MemWrite	0	0	0	0	0					0	1	0	0
+MemToReg	0	0	0	0	0					0	X	X	X
+Jump		0	0	0	0	0					0	0	0	1
