@@ -1,5 +1,7 @@
 package br.pucrs.orgArqII;
 
+import java.util.ArrayList;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -7,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import br.pucrs.orgArqII.MIPS.AssemblyElement;
 import br.pucrs.orgArqII.MIPS.Command;
 import br.pucrs.orgArqII.MIPS.MIPS;
+import br.pucrs.orgArqII.MIPS.MIPSStatus;
 import br.pucrs.orgArqII.MIPS.Registers;
 import br.pucrs.orgArqII.Utils.SourceReader;
 
@@ -28,7 +31,7 @@ public class MainForm extends javax.swing.JFrame {
 		jButton2 = new javax.swing.JButton();
 		jReiniciar = new javax.swing.JButton();
 		jScrollPane3 = new javax.swing.JScrollPane();
-		jTable2 = new javax.swing.JTable();
+		jStatus = new javax.swing.JTable();
 		jLabel3 = new javax.swing.JLabel();
 		jArquivo = new javax.swing.JButton();
 		jScrollPane4 = new javax.swing.JScrollPane();
@@ -76,7 +79,7 @@ public class MainForm extends javax.swing.JFrame {
 			}
 		});
 
-		jTable2.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null, null },
+		jStatus.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null, null },
 				{ null, null, null, null, null }, { null, null, null, null, null }, { null, null, null, null, null } },
 				new String[] { "Busca", "Decodificação", "Execução", "Memória", "Write Back" }) {
 			boolean[] canEdit = new boolean[] { false, false, false, false, false };
@@ -85,7 +88,7 @@ public class MainForm extends javax.swing.JFrame {
 				return canEdit[columnIndex];
 			}
 		});
-		jScrollPane3.setViewportView(jTable2);
+		jScrollPane3.setViewportView(jStatus);
 
 		jLabel3.setText("Estado atual");
 
@@ -98,7 +101,7 @@ public class MainForm extends javax.swing.JFrame {
 		});
 		jScrollPane4.setViewportView(jCommands);
 
-		jLabel4.setText("Comandos");
+		jLabel4.setText("Sob execução");
 
 		jMemoria.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {}, new String[] { "Reg", "Valor" }) {
 			boolean[] canEdit = new boolean[] { false, false };
@@ -261,6 +264,19 @@ public class MainForm extends javax.swing.JFrame {
 		updateRegisters();
 		updateCommands();
 		updateMemory();
+		updateStatus();
+	}
+
+	private void updateStatus() {
+		DefaultTableModel defaultTableModel = new DefaultTableModel();
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (MIPSStatus status : MIPSStatus.values()) {
+			defaultTableModel.addColumn(status);
+			arrayList.add(this.mips.getCommandDescriptions(status));
+		}
+
+		defaultTableModel.addRow(arrayList.toArray());
+		jStatus.setModel(defaultTableModel);
 	}
 
 	private void updateMemory() {
@@ -287,7 +303,7 @@ public class MainForm extends javax.swing.JFrame {
 		DefaultListModel defaultListModel = new DefaultListModel();
 		for (AssemblyElement elem : this.mips.getElements()) {
 			String aux = "   ";
-			if (elem instanceof Command && this.mips.isActualCommand((Command) elem))
+			if (elem instanceof Command && this.mips.isActualCommand(MIPSStatus.EXECUÇÃO, (Command) elem))
 				aux = "-> ";
 			defaultListModel.addElement(aux + elem);
 		}
@@ -333,7 +349,7 @@ public class MainForm extends javax.swing.JFrame {
 	private javax.swing.JScrollPane jScrollPane3;
 	private javax.swing.JScrollPane jScrollPane4;
 	private javax.swing.JTable jRegs;
-	private javax.swing.JTable jTable2;
+	private javax.swing.JTable jStatus;
 	// End of variables declaration
 
 }

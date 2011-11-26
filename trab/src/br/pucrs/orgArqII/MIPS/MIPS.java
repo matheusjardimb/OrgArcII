@@ -1,5 +1,6 @@
 package br.pucrs.orgArqII.MIPS;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -8,63 +9,82 @@ public class MIPS {
 	private List<AssemblyElement> commands;
 	private HashMap<Registers, String> registers;
 	private HashMap<String, String> memory;
-	private Integer actualCommand;
-
-	public void next() {
-		AssemblyElement next = moveNext();
-		if (next instanceof Label) {
-			this.next();
-		}
-		Label label = ((Command) next).execute(this);
-		if (label == null) {// not a branch
-			return;
-		}
-		for (int i = 0; i < this.commands.size(); i++) {
-			AssemblyElement c = this.commands.get(i);
-			if (c instanceof Label && ((Label) c).getName().equals(label.getName())) {
-				actualCommand = i;
-				return;
-			}
-		}
-	}
-
-	private AssemblyElement moveNext() {
-		if (hasNext())
-			return moveNext(this.actualCommand + 1);
-		else
-			return null;
-	}
-
-	private AssemblyElement moveNext(Integer actual) {
-		this.actualCommand = actual;
-		return this.commands.get(this.actualCommand);
-	}
+	private HashMap<MIPSStatus, Integer> status;
+	private List<MIPSStatus> asList = Arrays.asList(MIPSStatus.BUSCA, MIPSStatus.DECODIFICACAO, MIPSStatus.EXECUÇÃO,
+			MIPSStatus.MEMORIA, MIPSStatus.WRITEBACK);
 
 	public MIPS(List<AssemblyElement> commands) {
+		this.restart();
 		this.commands = commands;
-		this.actualCommand = 0;
+	}
+
+	public void next() {
+		for (MIPSStatus key : this.asList) {
+			Integer i = this.status.get(key);
+			if (i >= 0 && i < this.commands.size()) {
+				AssemblyElement assemblyElement = this.commands.get(i);
+				if (!(assemblyElement instanceof Label)) {
+					Label label = ((Command) assemblyElement).execute(this, key);
+					if (label != null) { // jump!
+						this.status.put(key, getLabel(label));
+					}
+				}
+			}
+			this.status.put(key, i + 1);
+		}
+	}
+
+	private Integer getLabel(Label label) {
+		for (int i = 0; i < this.commands.size(); i++) {
+			AssemblyElement ae = this.commands.get(i);
+			if (ae instanceof Label) {
+				if (((Label) ae).equals(label)) {
+					return i;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void restart() {
 		this.registers = new HashMap<Registers, String>();
 		// Initialize all registers
 		for (Registers reg : Registers.values()) {
 			this.registers.put(reg, "0");
 		}
 		this.memory = new HashMap<String, String>();
+		this.status = new HashMap<MIPSStatus, Integer>();
+		this.status.put(MIPSStatus.WRITEBACK, -4);
+		this.status.put(MIPSStatus.MEMORIA, -3);
+		this.status.put(MIPSStatus.EXECUÇÃO, -2);
+		this.status.put(MIPSStatus.DECODIFICACAO, -1);
+		this.status.put(MIPSStatus.BUSCA, 0);
+	}
+
+	public String getMemoryValue(String pos) {
+		if (this.memory.get(pos) == null) {
+			this.memory.put(pos, "0");
+		}
+		return this.memory.get(pos);
 	}
 
 	public List<AssemblyElement> getElements() {
 		return Collections.unmodifiableList(commands);
 	}
 
-	public boolean hasNext() {
-		return this.commands.size() > this.actualCommand + 1;
+	public String getRegisterValue(Registers reg) {
+		return this.registers.get(reg);
 	}
 
-	public void restart() {
-		this.actualCommand = 0;
+	public void setRegValue(Registers reg, String value) {
+		this.registers.put(reg, value);
 	}
 
-	public boolean isActualCommand(Command c) {
-		return this.commands.get(actualCommand) == c;
+	public boolean isActualCommand(MIPSStatus mipsStatus, Command c) {
+		Integer integer = this.status.get(mipsStatus);
+		if (this.commands.size() - 1 < integer || integer < 0)
+			return false;
+		return this.commands.get(integer) == c;
 	}
 
 	public void setMemory(String position, String value) {
@@ -79,19 +99,14 @@ public class MIPS {
 		return this.memory;
 	}
 
-	public String getMemoryValue(String pos) {
-		if (this.memory.get(pos) == null) {
-			this.memory.put(pos, "0");
+	public String getCommandDescriptions(MIPSStatus status) {
+		int index = this.status.get(status);
+		if (index < 0 || index > this.commands.size() - 1)
+			return null;
+		AssemblyElement command = this.commands.get(index);
+		while (!(command instanceof Command)) {
+			command = this.commands.get(index++);
 		}
-		return this.memory.get(pos);
+		return ((Command) command).getDescription(status);
 	}
-
-	public String getRegisterValue(Registers reg) {
-		return this.registers.get(reg);
-	}
-
-	public void setRegValue(Registers reg, String value) {
-		this.registers.put(reg, value);
-	}
-
 }

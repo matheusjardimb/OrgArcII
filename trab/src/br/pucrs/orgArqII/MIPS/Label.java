@@ -1,5 +1,6 @@
 package br.pucrs.orgArqII.MIPS;
 
+
 public class Label extends AssemblyElement {
 
 	private String name;
