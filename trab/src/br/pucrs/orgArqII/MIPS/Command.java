@@ -1,5 +1,6 @@
 package br.pucrs.orgArqII.MIPS;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Command extends AssemblyElement {
@@ -138,5 +139,207 @@ public class Command extends AssemblyElement {
 		// Not a branch command
 		return null;
 	}
-
+	
+	public List<String> getStatus(int status) throws Exception{
+		Exception exception = new Exception("Mal formed instruction");
+		switch (this.op) {
+		case ADD:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case AND:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case ADDI:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case ANDI:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case BEQ:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case J:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case LW:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case NOP:
+			switch (status) {
+			case 1:
+				return Arrays.asList("NOP");
+			case 2:
+				return Arrays.asList("NOP");
+			case 3:
+				return Arrays.asList("NOP");
+			case 4:
+				return Arrays.asList("NOP");
+			case 5:
+				return Arrays.asList("NOP");
+			default:
+				throw exception;
+			}
+		case OR:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case ORI:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case SLT:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case SLTI:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		case SW:
+			switch (status) {
+			case 1:
+				return Arrays.asList();
+			case 2:
+				return Arrays.asList("RegWrite: 1");
+			case 3:
+				return Arrays.asList("RegDst: 1", "ALUSrc: 0");
+			case 4:
+				return Arrays.asList("Branch: 0", "MemWrite: 0");
+			case 5:
+				return Arrays.asList("MemToReg: 0");
+			default:
+				throw exception;
+			}
+		default:
+			throw exception;
+		}
+	}
 }

@@ -261,6 +261,12 @@ public class MainForm extends javax.swing.JFrame {
 		updateRegisters();
 		updateCommands();
 		updateMemory();
+		updateStatus();
+	}
+
+	private void updateStatus() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void updateMemory() {
